@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "Misogyny Detector",
+  "description": "An extension that looks through your websites and automatically blurs out any text that may contain misogynistic material.",
+  "version": "1.0",
+  "action": {
+    "default_popup": "hello.html"
+  },
+  "permissions": [
+    "storage",
+    "downloads",
+    "tabs",
+    "webNavigation",
+    "scripting"
+
+  ],
+  "background": {"service_worker": "scripts/background.js"},
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["scripts/content.js"]
+    }
+  ]
+}
