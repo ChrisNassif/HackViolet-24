@@ -12,65 +12,109 @@ function elementUnblur(elem) {
     void elem.offsetHeight;
 }
 
-async function predictSentiment(data) {
-    const url = "http://127.0.0.1:8000/predict";
+function predictSentiment(data) {
+    console.log("PredictSentiment is running.");
+
+    const url = "http://34.207.98.86:8000/predict";
     const headers = {
-      "Content-Type": "application/json"
+        "Content-Type": "application/json"
     };
-  
-    try {
-      const response = await fetch(url, {
+
+    return fetch(url, {
         method: "POST",
         headers: headers,
         body: JSON.stringify(data)
-      });
-      const text = await response.text();
-      return text; // This returns the promise result to the caller
-    } catch (error) {
-      console.error('Error:', error);
-      throw error; // This allows the caller to catch the error
-    }
-  }
-
-  
-  
-  // Usage example
-  const data = {"data": "I hate women"};
-  predictSentiment(data)
-    .then(output => console.log(output))
-    .catch(error => console.error(error));
-  
-
-
-
-function readDocumentText(elem) {
-
+    })
+    .then(response => response.text()); // Convert response to text and return it
 }
 
-function checkIfElementsAreMisogynistic(elem) {
-    // Stores document text --> x = readDocumentText(elem)
-    // Split it by sentences and store in list
-    // traverse each sentence in the list and pass it to predictSentiment()
-        // store each flagged sentence and the returns it.
+/*
+function predictSentiment(data) {
+    console.log("PredictSentiment is running.");
+
+    const url = "http://34.207.98.86:8000/predict";
+    const headers = {
+        "Content-Type": "application/json"
+    };
+
+    // Create and return a new Promise
+    return new Promise((resolve, reject) => {
+        fetch(url, {
+            method: "POST",
+            headers: headers,
+            body: JSON.stringify(data)
+        })
+        .then(response => response.text()) // Convert response to text
+        .then(text => resolve(text)) // Resolve the promise with the text
+        .catch(error => {
+            console.error('Error:', error);
+            reject(error); // Reject the promise if an error occurs
+        });
+    });
+}*/
 
 
-    
+function readDocumentText() {
+    console.log("read text is running.");
+    let allElements = document.querySelectorAll("*");
+    const allElemTexts = {"data": ""}
+    const elInners = [] // Array of strings
 
+    for (let i = 0; i < allElements.length; i++) {  
+        let elem = allElements[i];
+        elInners.push(elem.innerText);
+    }
+    allElemTexts["data"] = elInners;
+    return allElemTexts; // allElemTexts = {"data": ["ABC", "DEF", "GHI"...."XYZ"]};
+}
 
+function readDocumentObjs() {
+    console.log("read obj is running.");
+    let allElements = document.querySelectorAll("*");
+    const allElems = {"data": ""}
+    const els = [] // Array of elem objects
 
+    for (let i = 0; i < allElements.length; i++) {  
+        let elem = allElements[i];
+        els.push(elem.innerText);
+    }
+    allElems["data"] = els;
+    return allElems; // allElemTexts = {"data": ["ABC", "DEF", "GHI"...."XYZ"]};
+}
 
-    // Placeholder for real implementation
-    return elem.innerText === "hi";
+function findMisogyny() {
+    console.log("find miso is running.");
+    allTexts = readDocumentText();
+    console.log(allTexts);
+    out = predictSentiment(allTexts["data"]);
+    console.log(out);
+    allObjs = readDocumentObjs();
+    const allMisoObjs = []
+
+    for(let i=0; i<out.length; i++)
+    {
+        if(out[i]){
+            allMisoObjs.push(allObjs["data"][i]);
+        }
+    }
+    return allMisoObjs;
 }
 
 function onTabLoaded() {
+    console.log("onTabLoaded is running.");
+    let allMisoElements = findMisogyny();
+    for(let i=0; i<allMisoElements; i++){
+        elementBlur(allMisoElements[i]);
+    }
+
+/*
     let allElements = document.querySelectorAll("*");
     for (let i = 0; i < allElements.length; i++) {
         let elem = allElements[i];
         if (elem.innerText && elem.textContent && elem.innerText.trim().length > 0 && checkIfElementsAreMisogynistic(elem)) {
             elementBlur(elem);
         }
-    }
+    }*/
 }
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
