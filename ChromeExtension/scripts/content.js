@@ -12,39 +12,6 @@ function elementUnblur(elem) {
     void elem.offsetHeight;
 }
 
-
-/*
-function predictSentiment(data)
-{
-var http = new XMLHttpRequest();
-var url = 'http://34.207.98.86:8000/predict';
-var params = data;
-http.open('POST', url, true);
-
-//Send the proper header information along with the request
-http.setRequestHeader('Content-type', 'application/json');
-
-http.onreadystatechange = function() {//Call a function when the state changes.
-    if(http.readyState == 4 && http.status == 200) {
-        alert(http.responseText);
-    }
-}
-const response = http.send(params);
-
-
-
-// var xhr = new XMLHttpRequest();
-xhr.onreadystatechange = function() {
-    if (xhr.readyState == XMLHttpRequest.DONE) {
-        alert(xhr.responseText);
-    }
-}
-xhr.open('GET', 'http://example.com', true);
-xhr.send(null);
-return response;
-}
-*/
-
 async function predictSentiment(data) {
     console.log("PredictSentiment is running.");
     const url = "http://34.207.98.86:8000/predict";
@@ -63,50 +30,6 @@ async function predictSentiment(data) {
       throw error; // This allows the caller to catch the error
     }
 }
-
-
-/*
-function predictSentiment(data) {
-    console.log("PredictSentiment is running.");
-
-    const url = "http://34.207.98.86:8000/predict";
-    const headers = {
-        "Content-Type": "application/json"
-    };
-
-    return fetch(url, {
-        method: "POST",
-        headers: headers,
-        body: JSON.stringify(data)
-    })
-    .then(response => response.text()); // Convert response to text and return it
-}*/
-
-/*
-function predictSentiment(data) {
-    console.log("PredictSentiment is running.");
-
-    const url = "http://34.207.98.86:8000/predict";
-    const headers = {
-        "Content-Type": "application/json"
-    };
-
-    // Create and return a new Promise
-    return new Promise((resolve, reject) => {
-        fetch(url, {
-            method: "POST",
-            headers: headers,
-            body: JSON.stringify(data)
-        })
-        .then(response => response.text()) // Convert response to text
-        .then(text => resolve(text)) // Resolve the promise with the text
-        .catch(error => {
-            console.error('Error:', error);
-            reject(error); // Reject the promise if an error occurs
-        });
-    });
-}*/
-
 
 function readDocumentText() {
     console.log("read text is running.");
@@ -162,15 +85,6 @@ function onTabLoaded() {
     for(let i=0; i<allMisoElements; i++){
         elementBlur(allMisoElements[i]);
     }
-
-/*
-    let allElements = document.querySelectorAll("*");
-    for (let i = 0; i < allElements.length; i++) {
-        let elem = allElements[i];
-        if (elem.innerText && elem.textContent && elem.innerText.trim().length > 0 && checkIfElementsAreMisogynistic(elem)) {
-            elementBlur(elem);
-        }
-    }*/
 }
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
