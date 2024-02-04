@@ -1,8 +1,11 @@
 import requests
+import json
 
-url = "http://127.0.0.1:8000/predict"
-params = {"data": "I hate women"}
+url = "http://34.207.98.86:8000/predict"
+data = {"data": 3}
 
-response = requests.post(url, params=params)
+# Send data as JSON in the request body
+response = requests.post(url, params=data)
 
+print()
 print(response.text)

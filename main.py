@@ -34,5 +34,5 @@ async def predict(data: str):
     
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="http://127.0.0.1:8000", port=8000)
+    uvicorn.run(app, host="http:/34.207.98.86", port=8000)
 
