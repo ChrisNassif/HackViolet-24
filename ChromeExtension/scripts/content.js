@@ -1,51 +1,41 @@
-let BLUR_LEVELS = ["0px", "4px"]
+let BLUR_LEVELS = ["0px", "4px"];
 
-function toggleElementBlur(elem) {
-    var elemIsBlurred = elem.getAttribute("isblurred") || false;
+function elementBlur(elem) {
+        elem.style.filter = "blur(" + BLUR_LEVELS[1] + ")";
+        elem.setAttribute("is-blurred", "true");
+}
 
-    if (elemIsBlurred) {
-        elem.style.webkitFilter = "blur(" + BLUR_LEVELS[0] + ")";
-    }
-    else {
-        elem.style.webkitFilter = "blur(" + BLUR_LEVELS[1] + ")";
-    }
-
-    elem.setAttribute("blur-level", !elemIsBlurred);
+function elementUnblur(elem) {
+    //elem.style.filter = "blur(" + BLUR_LEVELS[0] + ")";
+    elem.style.filter = "none";
+    elem.setAttribute("is-blurred", "false");
+    void elem.offsetHeight;
 }
 
 function checkIfElementsAreMisogynistic(elem) {
-    if (elem.innerText == "hi") {
-        return true;
-    }
-    return false;
+    // Placeholder for real implementation
+    return elem.innerText === "hi";
 }
 
 function onTabLoaded() {
     let allElements = document.querySelectorAll("*");
-
     for (let i = 0; i < allElements.length; i++) {
         let elem = allElements[i];
-        if (elem.innerText != undefined && elem.textContent != undefined && elem.innerText.length > 0 && checkIfElementsAreMisogynistic(elem)) {
-            toggleElementBlur(elem);
+        if (elem.innerText && elem.textContent && elem.innerText.trim().length > 0 && checkIfElementsAreMisogynistic(elem)) {
+            elementBlur(elem);
         }
     }
 }
-
-document.querySelector("*").addEventListener(
-    "click",
-    function(event) {
-        alert(typeof event.target.getAttribute("blur-level"));
-        alert(event.target.getAttribute("blur-level"));
-        // toggleElementBlur(event.target);
-        if (event.target.getAttribute("blur-level") == "true") {
-            toggleElementBlur(event.target);
-        }
-    },
-    true
-);
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     if (request.message === 'TabLoaded') {
         onTabLoaded();
     }
 });
+
+document.addEventListener("click", function(event) {
+    if (event.target.getAttribute("is-blurred") === "true") {   
+        elementUnblur(event.target);
+    }
+}, true);
+
