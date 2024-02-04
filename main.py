@@ -23,10 +23,12 @@ model = Model()
 async def read_root():
     return {"Hello": "World"}
 
+# {data: [udhasiuh, hdsouahdo, houdashui]}
+# {predictions: [True, False, True]}
 @app.post("/predict")
-async def predict(data: str):
+async def predict(text_elems: dict):
     try:
-        prediction = model.predict(data)
+        prediction = [model.predict(text) for text in text_elems["data"]]
         result = {"prediction": prediction}
         return JSONResponse(status_code=200, content=result)
     except Exception as e:
