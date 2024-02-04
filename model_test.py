@@ -5,4 +5,4 @@ class Model():
     def predict(self, text):
         pipe = pipeline("text-classification", model="NLP-LTU/distilbert-sexism-detector")
 
-        return pipe(text)
+        return True if pipe(text)["label"] == "sexist" else False
