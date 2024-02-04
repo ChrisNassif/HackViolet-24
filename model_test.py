@@ -2,9 +2,7 @@
 from transformers import pipeline
 
 class Model():
-    def predict(self,text):
+    def predict(self, text):
         pipe = pipeline("text-classification", model="NLP-LTU/distilbert-sexism-detector")
+
         return pipe(text)
-
-
-

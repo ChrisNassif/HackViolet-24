@@ -2,10 +2,10 @@ from fastapi import FastAPI, Body
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from mangum import Mangum
 import uvicorn
 from model_test import Model
-from fastapi.testclient import TestClient
+
 
 app = FastAPI()
 
@@ -34,5 +34,5 @@ async def predict(data: str):
     
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    uvicorn.run(app, host="http://127.0.0.1:8000", port=8000)
 
