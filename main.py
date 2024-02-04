@@ -27,7 +27,7 @@ async def read_root():
 # {predictions: [True, False, True]}
 
 @app.post("/predict")
-async def predict(text_elems: dict):
+async def predict(text_elems):
     try:
         prediction = [model.predict(text) for text in text_elems["data"]]
         result = {"prediction": prediction}

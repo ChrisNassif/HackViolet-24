@@ -12,6 +12,60 @@ function elementUnblur(elem) {
     void elem.offsetHeight;
 }
 
+
+/*
+function predictSentiment(data)
+{
+var http = new XMLHttpRequest();
+var url = 'http://34.207.98.86:8000/predict';
+var params = data;
+http.open('POST', url, true);
+
+//Send the proper header information along with the request
+http.setRequestHeader('Content-type', 'application/json');
+
+http.onreadystatechange = function() {//Call a function when the state changes.
+    if(http.readyState == 4 && http.status == 200) {
+        alert(http.responseText);
+    }
+}
+const response = http.send(params);
+
+
+
+// var xhr = new XMLHttpRequest();
+xhr.onreadystatechange = function() {
+    if (xhr.readyState == XMLHttpRequest.DONE) {
+        alert(xhr.responseText);
+    }
+}
+xhr.open('GET', 'http://example.com', true);
+xhr.send(null);
+return response;
+}
+*/
+
+async function predictSentiment(data) {
+    console.log("PredictSentiment is running.");
+    const url = "http://34.207.98.86:8000/predict";
+    console.log(data);
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        body: data
+      });
+      console.log(response);
+      const text = await response.text();
+      console.log(text);
+      return text; // This returns the promise result to the caller
+    } catch (error) {
+      console.error('Error:', error);
+      throw error; // This allows the caller to catch the error
+    }
+}
+
+
+/*
 function predictSentiment(data) {
     console.log("PredictSentiment is running.");
 
@@ -26,7 +80,7 @@ function predictSentiment(data) {
         body: JSON.stringify(data)
     })
     .then(response => response.text()); // Convert response to text and return it
-}
+}*/
 
 /*
 function predictSentiment(data) {
@@ -86,8 +140,10 @@ function findMisogyny() {
     console.log("find miso is running.");
     allTexts = readDocumentText();
     console.log(allTexts);
-    out = predictSentiment(allTexts["data"]);
+
+    out = predictSentiment(allTexts);
     console.log(out);
+    
     allObjs = readDocumentObjs();
     const allMisoObjs = []
 
